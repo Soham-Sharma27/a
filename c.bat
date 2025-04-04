@@ -9,6 +9,6 @@ type c.m | clip
 timeout /t 1 /nobreak > nul
 
 cd ..
-
+cls
 cd
 cmd /k
