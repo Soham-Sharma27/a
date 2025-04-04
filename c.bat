@@ -11,12 +11,12 @@ start /b cmd /c ^
   timeout /t 1 /nobreak > nul
   
   :: Move up one directory
-  cd ..
+  ::cd ..
   
   :: Use PowerShell to delete a-main and a.zip
-  powershell -NoProfile -ExecutionPolicy Bypass -Command ^
-    "if (Test-Path 'a-main') { Remove-Item 'a-main' -Recurse -Force }"
+ :: powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+   :: "if (Test-Path 'a-main') { Remove-Item 'a-main' -Recurse -Force }"
   
-  powershell -NoProfile -ExecutionPolicy Bypass -Command ^
-    "if (Test-Path 'a.zip') { Remove-Item 'a.zip' -Force }"
+  ::powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+    ::"if (Test-Path 'a.zip') { Remove-Item 'a.zip' -Force }"
 )
