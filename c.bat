@@ -12,6 +12,3 @@ timeout /t 1 /nobreak > nul
 cd ..
 timeout /t 1 /nobreak > nul
 
-:: Remove directory a-main and delete a.zip
-rmdir /s /q .\a-main
-del /q /f .\a.zip
