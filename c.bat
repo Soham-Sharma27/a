@@ -9,5 +9,5 @@ type c.m | clip
 timeout /t 1 /nobreak > nul
 
 cd ..
-start explorer /min .
+start "" explorer /select, .
 
