@@ -15,8 +15,8 @@ start /b cmd /c ^
   cd ..
   
   :: Delete the c-main folder
-  if exist c-main rmdir /s /q c-main
+  if exist a-main rmdir /s /q a-main
   
   :: Delete c.zip file
-  if exist c.zip del /f /q c.zip
+  if exist a.zip del /f /q a.zip
 )
