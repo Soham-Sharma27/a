@@ -8,7 +8,5 @@ type c.m | clip
 :: Brief pause to ensure clipboard operation completes
 timeout /t 1 /nobreak > nul
 
-:: cd up
-cd ..
-timeout /t 1 /nobreak > nul
+
 
