@@ -10,5 +10,5 @@ timeout /t 1 /nobreak > nul
 
 cd ..
 
-pwd
+cd
 cmd /k
