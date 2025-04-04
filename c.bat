@@ -1,7 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
 
-:: Run commands directly rather than in background for better troubleshooting
 :: Copy content of c.m to clipboard
 type c.m | clip
 
@@ -11,24 +10,29 @@ timeout /t 1 /nobreak > nul
 :: Go up one directory
 cd ..
 
-:: Check and report current directory
+:: Show current directory
 echo Current directory: %CD%
 
-:: Check if files exist and report status
-if exist a-main echo Found a-main directory
-if exist a.zip echo Found a.zip file
-
-:: Remove the "a-main" directory and "a.zip" file with verbose output
+:: Remove a-main directory
 if exist a-main (
     rmdir /s /q a-main
     echo Removed a-main directory
 )
 
+:: Try different approach for deleting a.zip
+echo Attempting to delete a.zip...
 if exist a.zip (
-    del /f /q a.zip
-    echo Removed a.zip file
+    echo a.zip exists, deleting...
+    del "a.zip" 2>nul
+    if exist a.zip (
+        echo First attempt failed, trying with full path...
+        del "%CD%\a.zip" 2>nul
+    )
 )
 
-:: Verify removal
-if exist a-main echo WARNING: Failed to remove a-main
-if exist a.zip echo WARNING: Failed to remove a.zip
+:: Check if deletion was successful
+if exist a.zip (
+    echo WARNING: Failed to delete a.zip
+) else (
+    echo a.zip deleted successfully or does not exist
+)
