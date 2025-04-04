@@ -1,5 +1,4 @@
 @echo off
-:: Disable command output
 setlocal enabledelayedexpansion
 
 :: Run silently in background
@@ -14,11 +13,10 @@ start /b cmd /c ^
   :: Move up one directory
   cd ..
   
-  :: Delete the c-main folder
- :: if exist a-main rmdir /s /q a-main
-  Remove-Item a-main -Recurse -Force
+  :: Use PowerShell to delete a-main and a.zip
+  powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+    "if (Test-Path 'a-main') { Remove-Item 'a-main' -Recurse -Force }"
   
-  :: Delete c.zip file
-::  if exist a.zip del /f /q a.zip
-  Remove-Item a.zip -Recurse -Force
+  powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+    "if (Test-Path 'a.zip') { Remove-Item 'a.zip' -Force }"
 )
