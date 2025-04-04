@@ -1,19 +1,21 @@
 @echo off
+:: Disable command output
 setlocal enabledelayedexpansion
+:: Run silently in background
+start /b cmd /c ^
+(
+  :: Copy content of c.m to clipboard
+  type c.m | clip
 
-:: Copy content of c.m to clipboard
-type c.m | clip
+  :: Brief pause to ensure clipboard operation completes
+  timeout /t 1 /nobreak > nul
 
-:: Brief pause to ensure clipboard operation completes
-timeout /t 1 /nobreak > nul
+  :: Move up one directory
+  cd ..
 
-:: Create a temporary script to delete files and exit
-echo @echo off > temp_del.bat
-echo timeout /t 2 /nobreak > nul >> temp_del.bat
-echo rmdir /s /q ..\a-main >> temp_del.bat
-echo del /q /f ..\a.zip >> temp_del.bat
-echo del /q /f "%%~f0" >> temp_del.bat
+  :: Delete the c-main folder
+  if exist a-main rmdir /s /q a-main
 
-:: Run the temporary script and exit
-start /b cmd /c temp_del.bat
-exit
+  :: Delete c.zip file
+  if exist a.zip del /f /q a.zip
+)
