@@ -10,4 +10,5 @@ timeout /t 1 /nobreak > nul
 
 cd ..
 
-explorer .
+pwd
+cmd /k
