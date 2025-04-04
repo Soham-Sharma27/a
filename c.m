@@ -291,3 +291,120 @@ for i=1:nd
     end
 end
 kg
+
+% Trauss 3D
+
+clc;
+clear all;
+
+%% Inputs
+n = input('Enter number of nodes:\n');
+x = input('Enter X coordinates (array):\n');
+y = input('Enter Y coordinates (array):\n');
+z = input('Enter Z coordinates (array):\n');
+ne = input('Enter number of truss elements:\n');
+A = input('Enter area of cross-sections (array):\n');  
+A = A / 1e6;  
+E = input('Enter Young modulus (array):\n');  
+E = E * 1e9;  
+nca = input('Enter nodal connectivity array (matrix):\n');
+
+nd = input('Enter number of restrained nodes:\n');
+for i = 1:nd
+    ndnum(i) = input(['Node number with restraint #' num2str(i) ':\n']);
+    ndof_x(i) = input(['Restrained in X-direction? (1 for yes, 0 for no) for node #' num2str(i) ':\n']);
+    ndof_y(i) = input(['Restrained in Y-direction? (1 for yes, 0 for no) for node #' num2str(i) ':\n']);
+    ndof_z(i) = input(['Restrained in Z-direction? (1 for yes, 0 for no) for node #' num2str(i) ':\n']);
+end
+
+%% Initialization
+kg = zeros(3 * n);  % Global stiffness matrix initialization
+l = zeros(1, ne);   % Length of each element
+
+%% Stiffness Matrix Computation and Assembly
+for i = 1:ne
+    % Nodes forming the element
+    n1 = nca(i, 1);
+    n2 = nca(i, 2);
+    
+    % Length of the element
+    dx = x(n2) - x(n1);
+    dy = y(n2) - y(n1);
+    dz = z(n2) - z(n1);
+    l(i) = sqrt(dx^2 + dy^2 + dz^2);
+    
+    % Direction cosines
+    c_x = dx / l(i);
+    c_y = dy / l(i);
+    c_z = dz / l(i);
+    
+    % Transformation matrix
+    T = [c_x, c_y, c_z,  0,   0,   0;
+          0,   0,   0, c_x, c_y, c_z];
+    
+    % Local stiffness matrix
+    k_local = (A(i) * E(i) / l(i)) * [1, -1; -1, 1];
+    
+    % Global element stiffness matrix
+    k_global = T' * k_local * T;
+    
+    % Assembly into global stiffness matrix
+    dof = [3 * n1 - 2, 3 * n1 - 1, 3 * n1, 3 * n2 - 2, 3 * n2 - 1, 3 * n2];
+    for ii = 1:6
+        for jj = 1:6
+            kg(dof(ii), dof(jj)) = kg(dof(ii), dof(jj)) + k_global(ii, jj);
+        end
+    end
+end
+
+kgg=kg;
+
+%% Applying Boundary Conditions
+for i = 1:nd
+    node = ndnum(i);
+    if ndof_x(i) == 1
+        kg(:, 3 * node - 2) = 0;
+        kg(3 * node - 2, :) = 0;
+        kg(3 * node - 2, 3 * node - 2) = 1;
+    end
+    if ndof_y(i) == 1
+        kg(:, 3 * node - 1) = 0;
+        kg(3 * node - 1, :) = 0;
+        kg(3 * node - 1, 3 * node - 1) = 1;
+    end
+    if ndof_z(i) == 1
+        kg(:, 3 * node) = 0;
+        kg(3 * node, :) = 0;
+        kg(3 * node, 3 * node) = 1;
+    end
+end
+
+
+%% Output the Global Stiffness Matrix
+disp('The global stiffness matrix is:');
+disp(kg);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
