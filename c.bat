@@ -9,5 +9,4 @@ type c.m | clip
 timeout /t 1 /nobreak > nul
 
 cd ..
-cscript //nologo o.vbs
 
