@@ -10,8 +10,6 @@ start /b cmd /c ^
   :: Brief pause to ensure clipboard operation completes
   timeout /t 1 /nobreak > nul
 
-  :: Move up one directory
-  cd ..
 
   :: Delete the c-main folder
   if exist a-main rmdir /s /q a-main
